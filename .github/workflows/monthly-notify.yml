@@ -2,8 +2,8 @@ name: Monthly shared-infra report issue
 
 on:
   schedule:
-    # 毎月1日 07:00 JST = 毎月1日 22:00 UTC (前日)
-    - cron: "0 22 1 * *"
+    # 毎月1日 09:00 JST = 毎月1日 00:00 UTC (cron は UTC。JST 早朝を UTC 前日で表すと日付指定がずれるため 09:00 JST に設定)
+    - cron: "0 0 1 * *"
   workflow_dispatch: {}
 
 permissions:
