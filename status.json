@@ -1,21 +1,31 @@
 {
-  "generated_at": "2026-07-07T07:21:18.426376+00:00",
+  "generated_at": "2026-07-07T09:23:09.432954+00:00",
   "checks": [
     {
+      "status": "drift",
+      "summary": "config参照だがAPI一覧に無いモデルあり: claude-haiku-4-5",
+      "details": [
+        "missing: config が参照する 'claude-haiku-4-5' は Anthropic API 一覧に存在しない",
+        "new: API 一覧にある 'claude-haiku-4-5-20251001' は config 未参照(新モデルの可能性)",
+        "new: API 一覧にある 'claude-opus-4-1-20250805' は config 未参照(新モデルの可能性)",
+        "new: API 一覧にある 'claude-opus-4-5-20251101' は config 未参照(新モデルの可能性)",
+        "new: API 一覧にある 'claude-opus-4-6' は config 未参照(新モデルの可能性)",
+        "new: API 一覧にある 'claude-sonnet-4-5-20250929' は config 未参照(新モデルの可能性)"
+      ],
       "id": "anthropic-models",
       "name": "Anthropic モデル一覧 × litellm-proxy config",
-      "status": "unknown",
-      "summary": "環境変数が未設定: 'ANTHROPIC_API_KEY'",
-      "details": [],
-      "checked_at": "2026-07-07T07:21:18.426340+00:00"
+      "checked_at": "2026-07-07T09:23:08.329040+00:00"
     },
     {
+      "status": "warn",
+      "summary": "base image tag 'main-latest' は無固定(unpinned) — 明示バージョンに固定推奨",
       "id": "litellm-base-image",
       "name": "litellm-proxy base image 固定/陳腐化",
-      "status": "unknown",
-      "summary": "環境変数が未設定: 'LITELLM_REPO_TOKEN'",
-      "details": [],
-      "checked_at": "2026-07-07T07:21:18.426368+00:00"
+      "details": [
+        "Dockerfile FROM tag: main-latest",
+        "最新 BerriAI/litellm release: v1.91.0"
+      ],
+      "checked_at": "2026-07-07T09:23:08.802458+00:00"
     }
   ]
 }
