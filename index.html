@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>共有インフラ drift status — universal-settings</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #666666;
+    --border: #dddddd;
+    --card-bg: #f7f7f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --fg: #eaeaea;
+      --muted: #9a9a9a;
+      --border: #333844;
+      --card-bg: #1c1f26;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2rem 1rem 4rem;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    line-height: 1.6;
+  }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+  }
+  p.lead {
+    color: var(--muted);
+    margin-top: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  th {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #111;
+  }
+  .badge-ok { background: #4caf50; color: #fff; }
+  .badge-warn { background: #f5c518; color: #111; }
+  .badge-drift { background: #e5484d; color: #fff; }
+  .badge-unknown { background: #9aa0a6; color: #fff; }
+  .details {
+    margin: 0.4rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  footer {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  #generated-at {
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>共有インフラ drift status</h1>
+  <p class="lead">Ananda / HR-CCP / WAM 横断の共有インフラ(litellm-proxy 等)のバージョンドリフトを検知する Layer2 チェックの結果。</p>
+  <p>生成時刻: <span id="generated-at">読み込み中…</span></p>
+  <table>
+    <thead>
+      <tr>
+        <th>チェック</th>
+        <th>状態</th>
+        <th>概要</th>
+      </tr>
+    </thead>
+    <tbody id="checks-body">
+      <tr><td colspan="3">status.json を読み込み中…</td></tr>
+    </tbody>
+  </table>
+  <footer>
+    Layer 1 (Renovate) はこの repo の <code>default.json5</code> preset を各 repo から extends。
+    Layer 2 (この status page) は Renovate が知らない範囲(Anthropic モデル一覧・base image 最新性)を自作チェックで補完。
+  </footer>
+</main>
+<script>
+  function badgeClass(status) {
+    return "badge badge-" + (status || "unknown");
+  }
+
+  fetch("status.json")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      document.getElementById("generated-at").textContent = data.generated_at || "不明";
+      var tbody = document.getElementById("checks-body");
+      tbody.innerHTML = "";
+      (data.checks || []).forEach(function (check) {
+        var tr = document.createElement("tr");
+
+        var nameTd = document.createElement("td");
+        nameTd.textContent = check.name || check.id || "?";
+
+        var statusTd = document.createElement("td");
+        var badge = document.createElement("span");
+        badge.className = badgeClass(check.status);
+        badge.textContent = check.status || "unknown";
+        statusTd.appendChild(badge);
+
+        var summaryTd = document.createElement("td");
+        summaryTd.textContent = check.summary || "";
+        if (check.details && check.details.length) {
+          var ul = document.createElement("ul");
+          ul.className = "details";
+          check.details.forEach(function (d) {
+            var li = document.createElement("li");
+            li.textContent = d;
+            ul.appendChild(li);
+          });
+          summaryTd.appendChild(ul);
+        }
+
+        tr.appendChild(nameTd);
+        tr.appendChild(statusTd);
+        tr.appendChild(summaryTd);
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(function (err) {
+      document.getElementById("checks-body").innerHTML =
+        "<tr><td colspan=\"3\">status.json の読み込みに失敗: " + err + "</td></tr>";
+    });
+</script>
+</body>
+</html>

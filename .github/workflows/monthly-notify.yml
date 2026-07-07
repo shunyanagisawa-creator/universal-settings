@@ -1,0 +1,46 @@
+name: Monthly shared-infra report issue
+
+on:
+  schedule:
+    # 毎月1日 07:00 JST = 毎月1日 22:00 UTC (前日)
+    - cron: "0 22 1 * *"
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Render issue title/body from status.json
+        id: render
+        run: |
+          python checks/render_issue.py status.json > /tmp/rendered.txt
+          {
+            echo "title<<EOF_TITLE"
+            sed -n '1p' /tmp/rendered.txt
+            echo "EOF_TITLE"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "body<<EOF_BODY"
+            sed -n '/^---BODY---$/,$p' /tmp/rendered.txt | sed '1d'
+            echo "EOF_BODY"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "${{ steps.render.outputs.title }}" \
+            --body "${{ steps.render.outputs.body }}"

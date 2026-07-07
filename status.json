@@ -1,0 +1,21 @@
+{
+  "generated_at": null,
+  "checks": [
+    {
+      "id": "anthropic-models",
+      "name": "Anthropic モデル一覧 × litellm-proxy config",
+      "status": "unknown",
+      "summary": "初回チェック未実行",
+      "details": [],
+      "checked_at": null
+    },
+    {
+      "id": "litellm-base-image",
+      "name": "litellm-proxy base image 固定/陳腐化",
+      "status": "unknown",
+      "summary": "初回チェック未実行",
+      "details": [],
+      "checked_at": null
+    }
+  ]
+}

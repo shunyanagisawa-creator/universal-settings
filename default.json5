@@ -1,0 +1,44 @@
+// universal-settings — Renovate 共有 preset (Layer 1: パッケージマネージャが検知できる範囲)
+//
+// 消費側の各 repo (Ananda / HR-CCP / WAM / litellm-proxy 等) の renovate.json では、
+// このファイルを以下のように参照する:
+//
+//   {
+//     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+//     "extends": ["github>shunyanagisawa-creator/universal-settings"]
+//   }
+//
+// Renovate は default branch ルートの default.json5 / default.json を自動で preset として読む
+// (config ファイル名を指定しない `github>owner/repo` 参照の既定挙動)。
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  timezone: "Asia/Tokyo",
+
+  extends: [
+    "config:recommended",
+    ":dependencyDashboard",
+  ],
+
+  // 月1回程度のペースで十分(3プロジェクト横断・急ぎのセキュリティ通知は Renovate 既定の
+  // vulnerabilityAlerts が別枠で効くのでここでは通常更新のみ緩やかに)
+  schedule: ["on the first day of the month"],
+
+  // minor/patch は1つの PR にまとめてノイズを減らす。major は互換性確認が要るので個別 PR。
+  packageRules: [
+    {
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "minor と patch をまとめて更新",
+    },
+    {
+      matchUpdateTypes: ["major"],
+      groupName: null, // major は個別 PR のまま
+    },
+  ],
+
+  labels: ["renovate", "universal-settings"],
+
+  prConcurrentLimit: 3,
+
+  // automerge は一切設定しない(Charter Non-Goals)。全 PR は人手レビュー。
+  automerge: false,
+}
