@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "universal-settings — Renovate 共有 preset (Layer 1)。",
+    "消費側 repo の renovate.json は extends: ['github>shunyanagisawa-creator/universal-settings'] で参照。",
+    "hosted Renovate (Mend App) は repo preset として default.json のみ解決するため JSON5 でなく JSON。",
+    "schedule: 月1回 (急ぎの脆弱性は vulnerabilityAlerts が別枠で効く)。",
+    "minor/patch は1PRにグルーピング、major は個別PR。automerge は一切なし (全PR人手レビュー)。"
+  ],
+  "timezone": "Asia/Tokyo",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard"
+  ],
+  "schedule": ["on the first day of the month"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "minor と patch をまとめて更新"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "groupName": null
+    }
+  ],
+  "labels": ["renovate", "universal-settings"],
+  "prConcurrentLimit": 3,
+  "automerge": false
+}

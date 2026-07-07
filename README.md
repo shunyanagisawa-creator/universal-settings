@@ -6,14 +6,14 @@ Ananda / HR-CCP / WAM の3プロジェクトが共有する **共有インフラ
 
 3プロジェクトが litellm-proxy 等の共有インフラを持ち、バージョンドリフト(例: base image `main-latest` の無固定、Anthropic 新世代モデルの config 未登録)に誰も気づかない問題がある。これに対して2層で対策する。
 
-- **Layer 1 = Renovate**: npm/pip 等パッケージマネージャが検知できる範囲の依存更新を、この repo の `default.json5` を各消費 repo が `extends` することで一括管理する。
+- **Layer 1 = Renovate**: npm/pip 等パッケージマネージャが検知できる範囲の依存更新を、この repo の `default.json` を各消費 repo が `extends` することで一括管理する。
 - **Layer 2 = 自作チェック**: Renovate が知らない範囲(Anthropic モデル一覧の生死、Docker base image の実際の最新性)を `checks/` 配下の Python スクリプトで検知する。
 
 ## 構成図
 
 ```
 universal-settings/ (この repo, 中立・横断)
-├── default.json5              Layer1: Renovate shared preset(消費側が extends)
+├── default.json              Layer1: Renovate shared preset(消費側が extends)
 ├── checks/
 │   ├── check_anthropic_models.py   Layer2: Anthropic API × litellm-proxy config.yaml
 │   ├── check_litellm_image.py      Layer2: litellm-proxy Dockerfile base image
@@ -38,7 +38,7 @@ universal-settings/ (この repo, 中立・横断)
 }
 ```
 
-Renovate は `github>owner/repo` 参照時、対象 repo の default branch ルートにある `default.json5`(または `default.json`)を自動的に preset として読む。
+Renovate は `github>owner/repo` 参照時、対象 repo の default branch ルートにある `default.json`(または `default.json`)を自動的に preset として読む。
 
 ## Secrets
 
