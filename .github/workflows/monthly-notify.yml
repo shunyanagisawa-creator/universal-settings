@@ -40,7 +40,7 @@ jobs:
       - name: Create issue
         env:
           GH_TOKEN: ${{ github.token }}
+          ISSUE_TITLE: ${{ steps.render.outputs.title }}
+          ISSUE_BODY: ${{ steps.render.outputs.body }}
         run: |
-          gh issue create \
-            --title "${{ steps.render.outputs.title }}" \
-            --body "${{ steps.render.outputs.body }}"
+          gh issue create --title "$ISSUE_TITLE" --body "$ISSUE_BODY"
