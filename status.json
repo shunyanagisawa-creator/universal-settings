@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-08-30T20:06:34.078585+00:00",
+  "generated_at": "2026-09-06T20:07:01.203102+00:00",
   "checks": [
     {
       "status": "warn",
-      "summary": "新しいAnthropicモデルを検知(config未参照): claude-opus-4-5-20251101, claude-opus-4-6, claude-opus-4-7, claude-opus-4-8, claude-sonnet-4-5-20250929",
+      "summary": "新しいAnthropicモデルを検知(config未参照): claude-fable-5-1, claude-opus-4-5-20251101, claude-opus-4-6, claude-opus-4-7, claude-opus-4-8, claude-sonnet-4-5-20250929",
       "details": [
+        "new: API 一覧にある 'claude-fable-5-1' は config 未参照(新モデルの可能性)",
         "new: API 一覧にある 'claude-opus-4-5-20251101' は config 未参照(新モデルの可能性)",
         "new: API 一覧にある 'claude-opus-4-6' は config 未参照(新モデルの可能性)",
         "new: API 一覧にある 'claude-opus-4-7' は config 未参照(新モデルの可能性)",
@@ -13,18 +14,18 @@
       ],
       "id": "anthropic-models",
       "name": "Anthropic モデル一覧 × litellm-proxy config",
-      "checked_at": "2026-08-30T20:06:33.135505+00:00"
+      "checked_at": "2026-09-06T20:07:00.099815+00:00"
     },
     {
       "status": "warn",
-      "summary": "base image tag 'v1.91.0' は最新(v1.98.0)より古い可能性",
+      "summary": "base image tag 'v1.91.0' は最新(v1.100.0)より古い可能性",
       "id": "litellm-base-image",
       "name": "litellm-proxy base image 固定/陳腐化",
       "details": [
         "Dockerfile FROM tag: v1.91.0",
-        "最新 BerriAI/litellm release: v1.98.0"
+        "最新 BerriAI/litellm release: v1.100.0"
       ],
-      "checked_at": "2026-08-30T20:06:33.613889+00:00"
+      "checked_at": "2026-09-06T20:07:00.676568+00:00"
     }
   ]
 }
