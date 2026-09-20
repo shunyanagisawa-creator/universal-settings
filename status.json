@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-13T20:07:01.432334+00:00",
+  "generated_at": "2026-09-20T20:06:53.110474+00:00",
   "checks": [
     {
       "status": "warn",
@@ -14,18 +14,18 @@
       ],
       "id": "anthropic-models",
       "name": "Anthropic モデル一覧 × litellm-proxy config",
-      "checked_at": "2026-09-13T20:07:00.403047+00:00"
+      "checked_at": "2026-09-20T20:06:52.007432+00:00"
     },
     {
       "status": "warn",
-      "summary": "base image tag 'v1.91.0' は最新(v1.100.1)より古い可能性",
+      "summary": "base image tag 'v1.91.0' は最新(v1.101.0)より古い可能性",
       "id": "litellm-base-image",
       "name": "litellm-proxy base image 固定/陳腐化",
       "details": [
         "Dockerfile FROM tag: v1.91.0",
-        "最新 BerriAI/litellm release: v1.100.1"
+        "最新 BerriAI/litellm release: v1.101.0"
       ],
-      "checked_at": "2026-09-13T20:07:00.961259+00:00"
+      "checked_at": "2026-09-20T20:06:52.565478+00:00"
     }
   ]
 }
